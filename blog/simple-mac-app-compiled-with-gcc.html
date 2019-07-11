@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>使用 GCC 编译简单的 Mac App</title>
+    <meta name="description" content="">
+    <link rel="stylesheet" href="//w3cbaymax.oss-cn-shanghai.aliyuncs.com/felib/fonts/font-awesome/4.7.0/css/font-awesome.min.css">
+    
+    <link rel="preload" href="/assets/css/0.styles.99610e7b.css" as="style"><link rel="preload" href="/assets/js/app.bb54e7bf.js" as="script"><link rel="preload" href="/assets/js/5.be89517c.js" as="script"><link rel="preload" href="/assets/js/14.62f53f98.js" as="script"><link rel="preload" href="/assets/js/1.4fe1d110.js" as="script"><link rel="prefetch" href="/assets/js/10.9bcf57ac.js"><link rel="prefetch" href="/assets/js/11.646ed1dc.js"><link rel="prefetch" href="/assets/js/12.9a823eb5.js"><link rel="prefetch" href="/assets/js/13.d99666da.js"><link rel="prefetch" href="/assets/js/15.70ab16ae.js"><link rel="prefetch" href="/assets/js/16.db1676a3.js"><link rel="prefetch" href="/assets/js/17.5fd05f30.js"><link rel="prefetch" href="/assets/js/3.cbd2a993.js"><link rel="prefetch" href="/assets/js/4.50da1d26.js"><link rel="prefetch" href="/assets/js/6.aebca27f.js"><link rel="prefetch" href="/assets/js/7.e29c081c.js"><link rel="prefetch" href="/assets/js/8.b5a48f8f.js"><link rel="prefetch" href="/assets/js/9.e4a78595.js">
+    <link rel="stylesheet" href="/assets/css/0.styles.99610e7b.css">
+  </head>
+  <body>
+    <div id="app" data-server-rendered="true"><div id="container"><div id="mobile-nav"><a href="/" class="mobile-nav-link">首页</a><a href="https://github.com/richardo2016" class="mobile-nav-link">Github</a></div><div id="wrap" class="page__archive"><header id="header"><div id="banner"></div><div id="header-outer" class="outer"><div id="header-title" class="inner"><h1 id="logo-wrap"><a href="javascrip:void(0)" id="logo">RAY</a></h1><h2 id="subtitle-wrap"><a href="javascrip:void(0)" id="subtitle"><span role="text">ZIGZAG IN THE FLAT PAVEMENT</span></a></h2></div><div id="header-inner" class="inner"><nav id="main-nav"><a id="main-nav-toggle" class="nav-icon"></a><a href="/" class="main-nav-link"><b class="mr-xs fa fa-home"></b>首页</a><a href="https://github.com/richardo2016" class="main-nav-link"><b class="mr-xs fa fa-github"></b>Github</a></nav><nav id="sub-nav"><!----></nav></div></div></header><div class="outer"><section id="main"><article id="undefined-undefined" itemscope="itemscope" itemprop="blogPost" class="article article-typeundefined"><div class="article-meta"><a href="/blog/simple-mac-app-compiled-with-gcc.html" class="article-date"><time datetime="2019-07-11T07:36:53.000Z" itemprop="datePublished">2019-07-11</time></a></div><div class="article-inner"><header class="article-header"><div class="flex-v-center-j-between"><h1 itemprop="name" class="article-title">使用 GCC 编译简单的 Mac App</h1><!----></div></header><div itemprop="articleBody" class="article-entry"><div class="content__default"><p>只是编译一个简简单单的 Mac 窗口应用, 没什么实用价值 ┑(￣Д ￣)┍</p> <div><div class="saber-highlight" data-lang="objectivec"><pre class="saber-highlight-code language-objectivec">#import &lt;Cocoa/Cocoa.h>
+
+int main()
+{
+    NSAutoreleasePool* pool = [[NSAutoreleasePool alloc] init];
+    // NSApplication* app = [NSApplication sharedApplication];
+
+    //Create the main window
+    NSRect rc = NSMakeRect(0, 0, 800, 600);
+    NSUInteger uiStyle = NSTitledWindowMask | NSResizableWindowMask | NSClosableWindowMask;
+    NSBackingStoreType backingStoreStyle = NSBackingStoreBuffered;
+    NSWindow* win = [[NSWindow alloc] initWithContentRect:rc styleMask:uiStyle backing:backingStoreStyle defer:NO];
+    [win setTitle:@"测试字符串"];
+    [win makeKeyAndOrderFront:win];
+    [win makeMainWindow];
+
+    //Start the event loop by calling NSApp run
+    [NSApp run];
+    [pool drain];
+    return 0;
+}
+</pre></div></div> <p></p> <div><div class="saber-highlight" data-lang="makefile"><pre class="saber-highlight-code language-makefile">TARGET = hello
+
+CFLAGS ?= -std=c99 -Wall -Wextra -pedantic -I./
+
+TARGET_OS ?= $(OS)
+ifeq ($(TARGET_OS),Windows_NT)
+else ifeq ($(shell uname -s),Linux)
+else ifeq ($(shell uname -s),Darwin)
+	WEBVIEW_CFLAGS := -x objective-c
+	WEBVIEW_LDFLAGS := -framework Cocoa -framework WebKit
+endif
+
+$(TARGET): main.m
+	$(CC) $(CFLAGS) $(WEBVIEW_CFLAGS) main.m $(LDFLAGS) $(WEBVIEW_LDFLAGS) -o $@
+
+clean:
+	rm -f $(TARGET)
+
+.PHONY: clean
+</pre></div></div></div></div><footer class="article-footer"><ul class="article-tag-list"></ul></footer></div><!----></article></section><aside id="sidebar" class="http classes" data-v-36b89bfb><div class="widget-wrap" data-v-7fe577af data-v-36b89bfb><h3 class="widget-title" data-v-7fe577af>标签</h3><div class="widget" data-v-7fe577af><ul class="archive-list" data-v-7fe577af><li class="archive-list-item" data-v-7fe577af><a href="/tags/React" class="archive-list-link" data-v-7fe577af>React</a></li><li class="archive-list-item" data-v-7fe577af><a href="/tags/随笔" class="archive-list-link" data-v-7fe577af>随笔</a></li><li class="archive-list-item" data-v-7fe577af><a href="/tags/meltdown" class="archive-list-link" data-v-7fe577af>meltdown</a></li><li class="archive-list-item" data-v-7fe577af><a href="/tags/chrome" class="archive-list-link" data-v-7fe577af>chrome</a></li><li class="archive-list-item" data-v-7fe577af><a href="/tags/golang" class="archive-list-link" data-v-7fe577af>golang</a></li><li class="archive-list-item" data-v-7fe577af><a href="/tags/json-iterator" class="archive-list-link" data-v-7fe577af>json-iterator</a></li><li class="archive-list-item" data-v-7fe577af><a href="/tags/vue" class="archive-list-link" data-v-7fe577af>vue</a></li><li class="archive-list-item" data-v-7fe577af><a href="/tags/js" class="archive-list-link" data-v-7fe577af>js</a></li><li class="archive-list-item" data-v-7fe577af><a href="/tags/纯函数" class="archive-list-link" data-v-7fe577af>纯函数</a></li><li class="archive-list-item" data-v-7fe577af><a href="/tags/pug" class="archive-list-link" data-v-7fe577af>pug</a></li></ul></div></div><div class="widget-wrap" data-v-1869194d data-v-36b89bfb><h3 class="widget-title" data-v-1869194d>新近文章</h3><div class="widget" data-v-1869194d><ul class="archive-list" data-v-1869194d><li class="archive-list-item" data-v-1869194d><a href="/blog/you-might-not-need-vue-sfc.html" class="archive-list-link" data-v-1869194d>你可能不需要 *.vue</a></li><li class="archive-list-item" data-v-1869194d><a href="/blog/test-jsoniter.html" class="archive-list-link" data-v-1869194d>jsoniter 举例</a></li><li class="archive-list-item" data-v-1869194d><a href="/blog/meltdown-about-uxss-in-chrome.html" class="archive-list-link" data-v-1869194d>meltdown-about-uxss-in-chrome</a></li><li class="archive-list-item" data-v-1869194d><a href="/blog/simple-mac-app-compiled-with-gcc.html" class="archive-list-link" data-v-1869194d>使用 GCC 编译简单的 Mac App</a></li><li class="archive-list-item" data-v-1869194d><a href="/blog/material-ui-review.html" class="archive-list-link" data-v-1869194d>忽然想起的 material-ui</a></li></ul></div></div></aside></div><footer id="footer"><div class="outer"><div id="footer-info" class="inner">©
+2019<span class="ml-xs mr-xs"></span>Powered By<span class="ml-xs"><a href="//v1.vuepress.vuejs.org" target="_blank">Vuepress</a></span></div></div></footer></div></div><div class="global-ui"><!----></div></div>
+    <script src="/assets/js/app.bb54e7bf.js" defer></script><script src="/assets/js/5.be89517c.js" defer></script><script src="/assets/js/14.62f53f98.js" defer></script><script src="/assets/js/1.4fe1d110.js" defer></script>
+  </body>
+</html>
